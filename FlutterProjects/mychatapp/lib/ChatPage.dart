@@ -1,18 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mychatapp/Provider.dart';
 
 import 'AddPostPage.dart';
 import 'LoginPage.dart';
 
-class ChatPage extends StatelessWidget {
-  // 引数からユーザー情報を受け取れるようにする
-  ChatPage(this.user);
-  // ユーザー情報
-  final User user;
-
+class ChatPage extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    // Providerから値を受け取る
+    final User user = watch(userProvider).state!;
+    final AsyncValue<QuerySnapshot> asyncPostQuery =watch(postsQueryProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('チャット'),
@@ -44,26 +45,17 @@ class ChatPage extends StatelessWidget {
             ),
           ),
           Expanded(
-            // FlutterBuilder
+            // Stream Providerから受け取った値は .when() で状態に応じて出し分けできる
             // 非同期処理の結果を元にWidgetを作れる
-            child: StreamBuilder<QuerySnapshot>(
-              // 投稿メッセージ一覧を取得（非同期処理）
-              // 投稿日時でソート
-              stream: FirebaseFirestore.instance
-                  .collection('posts')
-                  .orderBy('date')
-                  .snapshots(),
-              builder: (context, snapshot) {
-                // データが取得できた場合
-                if (snapshot.hasData) {
-                  final List<DocumentSnapshot> documents = snapshot.data!.docs;
-                  // 取得した投稿メッセージ一覧を元にリスト表示
-                  return ListView(
-                    children: documents.map((document) {
-                      return Card(
-                        child: ListTile(
-                          title: Text(document['text']),
-                          subtitle: Text(document['email']),
+            child: asyncPostQuery.when(
+              // 値が取得できた場合
+              data: (QuerySnapshot query) {
+                return ListView(
+                  children: query.docs.map((document) {
+                    return Card(
+                      child: ListTile(
+                        title: Text(document['text']),
+                        subtitle: Text(document['email']),
                           // 自分の投稿メッセージには削除ボタンを表示
                           trailing: document['email'] == user.email
                               ? IconButton(
@@ -77,14 +69,21 @@ class ChatPage extends StatelessWidget {
                                   },
                                 )
                               :null,
-                        ),
-                      );
-                    }).toList(),
-                  );
-                }
-                // データが読み込み中の場合
+                      ),
+                    );
+                  }).toList(),
+                );
+              },
+              // 値が読み込み中の場合
+              loading: () {
                 return Center(
-                  child: Text('読み込み中...'),
+                  child: Text('読込中...'),
+                );
+              },
+              // 値の取得に失敗したとき
+              error: (e, stackTrace) {
+                return Center(
+                  child: Text(e.toString()),
                 );
               },
             ),
@@ -98,7 +97,7 @@ class ChatPage extends StatelessWidget {
           // 投稿画面に推移
           await  Navigator.of(context).push(
             MaterialPageRoute(builder: (context) {
-              return AddPostPage(user);
+              return AddPostPage();
             }),
           );
         },
