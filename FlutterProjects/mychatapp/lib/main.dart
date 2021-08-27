@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
@@ -23,12 +22,12 @@ class MyChatApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-              title: 'MyChatApp',
-              theme: ThemeData(
-                primarySwatch: Colors.blue,
-              ),
-              // ログイン画面を表示
-              home: LoginPage(),
+      title: 'MyChatApp',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      // ログイン画面を表示
+      home: LoginPage(),
     );
   }
 }
