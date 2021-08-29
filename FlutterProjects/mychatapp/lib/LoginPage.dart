@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mychatapp/main.dart';
 
 import 'ChatPage.dart';
 import 'Provider.dart';
@@ -15,6 +14,10 @@ class LoginPage extends ConsumerWidget {
     final password = watch(passwordProvider).state;
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text('ログイン'),
+      ),
+
       body: Center(
        child: Container(
          padding: EdgeInsets.all(24),
@@ -108,6 +111,19 @@ class LoginPage extends ConsumerWidget {
                    }
                  },
                ),
+             ),
+
+             Container(
+               padding: EdgeInsets.all(8),
+               // メッセージ表示
+               child: Text("テストユーザー"),
+             ),
+             Container(
+               padding: EdgeInsets.all(8),
+               child: Text("email: renny@example.com"),
+             ),
+             Container(
+               child: Text("renny123"),
              ),
 
            ],

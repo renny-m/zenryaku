@@ -1,0 +1,53 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mychatapp/main.dart';
+
+import 'ChatPage.dart';
+import 'LoginPage.dart';
+import 'Provider.dart';
+
+class HomePage extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, ScopedReader watch) {
+    return Scaffold(
+      backgroundColor: kBackgroundColor,
+      body: Center(
+       child: Container(
+         padding: EdgeInsets.all(24),
+         child: Column(
+           mainAxisAlignment: MainAxisAlignment.center,
+           children: <Widget>[
+             Container(
+               child: Text(
+                 "前略プロフィール",
+                 style: TextStyle(
+                   color: kTextColorPrimary,
+                   fontSize: 60
+                 ),
+               ),
+             ),
+
+             // ログイン画面へ
+             Container(
+               width: double.infinity,
+               // ログインボタン
+               child: ElevatedButton(
+                 child: Text('ログイン画面へ'),
+                 onPressed: () {
+                   Navigator.of(context).pushReplacement(
+                       MaterialPageRoute(builder: (context) {
+                         return LoginPage();
+                       }),
+                   );
+                 },
+               ),
+             ),
+
+           ],
+         ),
+       ),
+      ),
+    );
+  }
+}

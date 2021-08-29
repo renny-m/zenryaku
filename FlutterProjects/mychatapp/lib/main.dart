@@ -1,8 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
+import 'HomePage.dart';
 
-import 'LoginPage.dart';
+const Color kAccentColor = Color(0xFFFE7C64);
+const Color kBackgroundColor = Colors.black;
+const Color kTextColorPrimary = Color(0xFFECEFF1);
+const Color kTextColorSecondary = Color(0xFFB0BEC5);
+const Color kButtonColorPrimary = Colors.pink;
+const Color kButtonColorSecondary = Colors.purple;
 
 void main() async {
   // 初期化処理
@@ -13,21 +19,22 @@ void main() async {
   runApp(
     // Riverpodでデータを受け渡しできる状態にする
     ProviderScope(
-      child: MyChatApp(),
+      child: MyZenryakuApp(),
     ),
   );
 }
 
-class MyChatApp extends StatelessWidget {
+class MyZenryakuApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'MyChatApp',
+      debugShowCheckedModeBanner: false,
+      title: 'MyZenryakuApp',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.pink,
       ),
       // ログイン画面を表示
-      home: LoginPage(),
+      home: HomePage(),
     );
   }
 }
