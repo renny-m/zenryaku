@@ -18,17 +18,21 @@ class HomePage extends ConsumerWidget {
          child: Column(
            mainAxisAlignment: MainAxisAlignment.center,
            children: <Widget>[
+             // タイトル
              Container(
                child: Text(
                  "前略プロフィール",
                  style: TextStyle(
                    color: kTextColorPrimary,
-                   fontSize: 60
+                   fontSize: 30
                  ),
                ),
              ),
 
-             // ログイン画面へ
+             // 空白
+             SizedBox(height: 30),
+
+             // ログイン画面へボタン
              Container(
                width: double.infinity,
                // ログインボタン

@@ -8,7 +8,9 @@ const Color kBackgroundColor = Colors.black;
 const Color kTextColorPrimary = Color(0xFFECEFF1);
 const Color kTextColorSecondary = Color(0xFFB0BEC5);
 const Color kButtonColorPrimary = Colors.pink;
-const Color kButtonColorSecondary = Colors.purple;
+const Color kButtonTextColorPrimary = Color(0xF6AFC8FF);
+const Color kIconColor = Colors.pink;
+
 
 void main() async {
   // 初期化処理

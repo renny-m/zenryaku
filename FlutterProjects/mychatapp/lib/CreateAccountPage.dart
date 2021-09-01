@@ -1,16 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mychatapp/CreateAccountPage.dart';
-import 'package:mychatapp/PasscodeResetPage.dart';
-import 'package:mychatapp/ProfilePage.dart';
 import 'package:mychatapp/main.dart';
 
 import 'ChatPage.dart';
-import 'HomePage.dart';
+import 'LoginPage.dart';
 import 'Provider.dart';
 
-class LoginPage extends ConsumerWidget {
+class CreateAccountPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     // Providerから値を受け取る
@@ -20,7 +17,7 @@ class LoginPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('ログイン画面'),
+        title: Text('アカウント登録画面'),
       ),
 
       body: Center(
@@ -58,90 +55,54 @@ class LoginPage extends ConsumerWidget {
 
              Container(
                width: double.infinity,
-               // ログインボタン
+               // ユーザー登録ボタン
                child: ElevatedButton(
-                 child: Text('ログイン'),
+                 child: Text('新規登録'),
                  onPressed: () async {
                    try {
-                     // メール / パスワードでログイン
+                     // メール / パスワードでユーザー登録
                      final FirebaseAuth auth = FirebaseAuth.instance;
-                     final result = await auth.signInWithEmailAndPassword(
+                     final result = await auth.createUserWithEmailAndPassword(
                        email: email,
                        password: password,
                      );
+                     // ユーザー情報を更新
+                     context.read(userProvider).state = result.user;
 
-                     // ログインに成功した場合
+                     // ユーザー登録に成功した場合
                      // チャット画面に遷移 + ログイン画面を破棄
                      await  Navigator.of(context).pushReplacement(
                        MaterialPageRoute(builder: (context) {
-                         return ProfilePage();
+                         return ChatPage();
                        }),
                      );
                    } catch (e) {
-                     // ログインに失敗した場合
+                     // ユーザー登録に失敗した場合
                      // Providerから値を更新
                      context.read(infoTextProvider).state =
-                         "ログインに失敗しました：${e.toString()}";
+                        "登録に失敗しました：${e.toString()}";
                    }
                  },
                ),
              ),
-             const SizedBox(height: 16),
 
-             Container(
-               width: double.infinity,
-               // 新規登録ボタン
-               child: OutlinedButton(
-                 child: Text('アカウントをお持ちでない方はこちらから新規登録'),
-                 onPressed: () {
-                   Navigator.of(context).pushReplacement(
-                     MaterialPageRoute(builder: (context) {
-                       return CreateAccountPage();
-                     }),
-                   );
-                 },
-               ),
-             ),
-             const SizedBox(height: 16),
-
-             Container(
-               width: double.infinity,
-               // パスワード再設定リンク
-               child: TextButton(
-                 child: Text('パスワードをお忘れですか？'),
-                 onPressed: () {
-                   Navigator.of(context).pushReplacement(
-                     MaterialPageRoute(builder: (context) {
-                       return PasscodeResetPage();
-                     }),
-                   );
-                 },
-               ),
-             ),
-
+             const SizedBox(height: 8),
 
              Container(
                padding: EdgeInsets.all(8),
                // メッセージ表示
-               child: Text("テストユーザー"),
-             ),
-             Container(
-               padding: EdgeInsets.all(8),
-               child: Text("email: test@example.com"),
-             ),
-             Container(
-               child: Text("test123"),
+               child: Text("LINE連携とかGoogle連携のアイコンも追加する"),
              ),
              const SizedBox(height: 32),
 
              ElevatedButton(
                child: Text('ホーム画面へ'),
                onPressed: () {
-                 // ホーム画面に戻る
+                 // ログイン画面に戻る
                  Navigator.of(context).pushReplacement(
-                     MaterialPageRoute(builder: (context) {
-                       return HomePage();
-                     }),
+                   MaterialPageRoute(builder: (context) {
+                     return LoginPage();
+                   }),
                  );
                },
              )
