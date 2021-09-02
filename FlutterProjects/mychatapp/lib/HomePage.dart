@@ -39,7 +39,7 @@ class HomePage extends ConsumerWidget {
                child: ElevatedButton(
                  child: Text('ログイン画面へ'),
                  onPressed: () async {
-                   await Navigator.of(context).push(
+                   await Navigator.of(context).pushReplacement(
                        MaterialPageRoute(builder: (context) {
                          return LoginPage();
                        }),
